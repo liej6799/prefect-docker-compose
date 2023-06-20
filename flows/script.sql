@@ -6,8 +6,8 @@ type TEXT NOT NULL,--  [1]
 domain TEXT NOT NULL, --  [2]
 client TEXT NOT NULL, --  [3]
 forward TEXT NOT NULL, -- [4] need transform int to text
-replyType INTEGER NOT NULL, -- [6]
-duration INTEGER NOT NULL, -- [7]
+replyType INTEGER NOT NULL, -- [5]
+duration REAL NOT NULL, -- [6]
 UNIQUE (timestamp, type, domain, client, forward, replyType, duration)
 );
 

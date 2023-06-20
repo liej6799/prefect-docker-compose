@@ -40,6 +40,7 @@ class Postgres():
 
         async with self.conn.transaction():
             try:
+                print('try insert')
                 await self.conn.execute(f"INSERT INTO {self.table} VALUES {args_str} ON CONFLICT DO NOTHING")
             except Exception as a:
                 print(a)
@@ -54,7 +55,7 @@ class PiHoleRawPostgres(Postgres):
         NotImplemented
 
     def _write(self, data):
-        return f"(DEFAULT,'{data[1][0]}','{data[1][1]}','{data[1][2]}','{data[1][3]}','{data[1][4]}','{data[1][6]}','{data[1][7]}')"
+        return f"(DEFAULT,'{data[1][0]}','{data[1][1]}','{data[1][2]}','{data[1][3]}','{data[1][4]}','{data[1][5]}','{data[1][6]}')"
 
 
 class PiHoleDomainPostgres(Postgres):

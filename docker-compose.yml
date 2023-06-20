@@ -54,7 +54,7 @@ services:
   agent:
     image: prefecthq/prefect:2.10.13-python3.11
     restart: always
-    entrypoint: ["prefect", "agent", "start", "-q", "YOUR_WORK_QUEUE_NAME"]
+    entrypoint: ["prefect", "agent", "start", "-q", "default-agent-pool"]
     environment:
       - PREFECT_API_URL=http://server:4200/api
 #       Use PREFECT_API_KEY if connecting the agent to Prefect Cloud
@@ -65,10 +65,10 @@ services:
   cli:
     image: prefecthq/prefect:2.10.13-python3.11
     entrypoint: "bash"
-    working_dir: "/root/flows"
+    working_dir: "/root"
     volumes:
       - "./flows:/root/flows"
-
+      - './etc-pihole:/root/pihole'
     environment:
       - PREFECT_API_DATABASE_CONNECTION_URL=postgresql+asyncpg://postgres:postgres@database:5432/prefect
       - PIHOLE_API_AUTH=113459eb7bb31bddee85ade5230d6ad5d8b2fb52879e00a84ff6ae1067a210d3
