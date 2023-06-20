@@ -43,7 +43,7 @@ services:
       - PREFECT_SERVER_API_HOST=0.0.0.0
       - PREFECT_API_DATABASE_CONNECTION_URL=postgresql+asyncpg://postgres:postgres@database:5432/prefect
       # Uncomment the following line if you want to use the 'S3 Bucket' storage block instead of the older 'S3' storage
-      # - EXTRA_PIP_PACKAGES=prefect-aws
+      - EXTRA_PIP_PACKAGES=s3fs
     ports:
       - 4200:4200
     depends_on:
@@ -52,11 +52,14 @@ services:
 
   ## Prefect Agent
   agent:
-    image: prefecthq/prefect:2.10.13-python3.11
+    image: prefecthq/prefect:2-latest
     restart: always
-    entrypoint: ["prefect", "agent", "start", "-q", "default-agent-pool"]
+    entrypoint: ["prefect", "agent", "start", "-p", "default-agent-pool"]
+    volumes:
+      - './etc-pihole:/root/pihole'
     environment:
       - PREFECT_API_URL=http://server:4200/api
+      - EXTRA_PIP_PACKAGES=s3fs
 #       Use PREFECT_API_KEY if connecting the agent to Prefect Cloud
 #     - PREFECT_API_KEY=YOUR_API_KEY
     profiles: ["agent"]
@@ -78,7 +81,8 @@ services:
 #     - PREFECT_API_KEY=YOUR_API_KEY
     profiles: ["cli"]
     
-
+  keinos/sqlite3
+  
   pihole:
     container_name: pihole
     image: pihole/pihole:latest
